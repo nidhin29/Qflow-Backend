@@ -10,6 +10,7 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_PASSWORD=""
+      - RABBITMQ_URL=amqp://admin:admin123@rabbitmq:5672
     depends_on:
       - redis
       - rabbitmq
