@@ -1,6 +1,7 @@
 import dns from "dns"
 dns.setServers(['8.8.8.8', '8.8.4.4']);
 import dotenv from "dotenv"
+dotenv.config({ path: "./.env" })
 import { connectDB } from "./db/index.js"
 import { app } from "./app.js"
 import { connectRedis } from "./db/redis.js";
@@ -9,18 +10,13 @@ import { Server } from "socket.io";
 import { initReminderCron } from "./cron/reminder.cron.js";
 import { connectRabbitMQ } from "./config/rabbitmq.js";
 import { setupWorkers } from "./workers/notification.worker.js";
-dotenv.config(
-    {
-        path: "./.env"
-    }
-)
 
 
 const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
     cors: {
-        origin: process.env.CORS_ORIGIN,
+        origin: process.env.CORS_ORIGIN === "*" ? true : process.env.CORS_ORIGIN?.split(","),
         credentials: true
     }
 });
